@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Feliz Cumpleaños</title>
+
+<style>
+body{
+    margin:0;
+    background:black;
+    overflow:hidden;
+    font-family:Arial, sans-serif;
+    color:white;
+    text-align:center;
+    cursor:pointer;
+}
+
+/* Corazones cayendo */
+.heart{
+    position:absolute;
+    color:#ff4da6;
+    animation:fall linear infinite;
+    z-index:1;
+}
+
+@keyframes fall{
+    0%{ transform:translateY(-10px); }
+    100%{ transform:translateY(100vh); }
+}
+
+/* Contenedor central */
+.container{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    z-index:10;
+}
+
+/* Regalo */
+#regalo{
+    font-size:90px;
+    animation:latido 1s infinite;
+}
+
+@keyframes latido{
+    0%{transform:scale(1);}
+    50%{transform:scale(1.1);}
+    100%{transform:scale(1);}
+}
+
+/* Nombre */
+#nombre{
+    font-size:55px;
+    letter-spacing:4px;
+    margin-bottom:20px;
+    display:none;
+}
+
+/* Brillo */
+.brillo{
+    animation:glow 1s infinite alternate;
+}
+
+@keyframes glow{
+    from{ text-shadow:0 0 10px #ff4da6; }
+    to{ text-shadow:0 0 25px #ff99cc; }
+}
+
+/* Cupcake */
+#cupcake{
+    font-size:70px;
+    display:none;
+}
+
+/* Mensaje */
+#mensaje{
+    margin-top:20px;
+    font-size:22px;
+    display:none;
+}
+
+/* Frase final */
+#final{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    font-size:26px;
+    display:none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container" id="contenido">
+    <div id="regalo">🎁</div>
+    <div id="nombre"></div>
+    <div id="cupcake">🧁</div>
+    <div id="mensaje">
+        Feliz cumpleaños hermoso,<br>
+        que todos tus deseos se cumplan 💗
+    </div>
+</div>
+
+<div id="final">
+    Cuando quieras bajo y como lo mío ☺️
+</div>
+
+<script>
+
+function crearCorazones(){
+    setInterval(()=>{
+        let heart=document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerHTML="💗";
+        heart.style.left=Math.random()*100+"vw";
+        heart.style.fontSize=(Math.random()*20+15)+"px";
+        heart.style.animationDuration=(Math.random()*3+3)+"s";
+        document.body.appendChild(heart);
+        setTimeout(()=>{ heart.remove(); },6000);
+    },250);
+}
+crearCorazones();
+
+let iniciado=false;
+
+document.body.addEventListener("click",function(){
+
+    if(iniciado) return;
+    iniciado=true;
+
+    document.getElementById("regalo").style.display="none";
+
+    let nombre=document.getElementById("nombre");
+    nombre.style.display="block";
+
+    let texto="Felipe";
+    let i=0;
+
+    function escribir(){
+        if(i<texto.length){
+            nombre.innerHTML+=texto.charAt(i);
+            i++;
+            setTimeout(escribir,200);
+        } else {
+            nombre.classList.add("brillo");
+
+            setTimeout(()=>{
+                document.getElementById("cupcake").style.display="block";
+            },600);
+
+            setTimeout(()=>{
+                document.getElementById("mensaje").style.display="block";
+            },1300);
+
+            setTimeout(explotar,4000);
+        }
+    }
+
+    escribir();
+});
+
+function explotar(){
+    document.getElementById("contenido").style.transition="1s";
+    document.getElementById("contenido").style.transform="scale(0)";
+    document.getElementById("contenido").style.opacity="0";
+
+    setTimeout(()=>{
+        document.getElementById("final").style.display="block";
+    },1000);
+}
+
+</script>
+
+</body>
+</html>
